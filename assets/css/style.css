@@ -1,0 +1,54 @@
+.btn-pink {
+  background-color: #ff66b2;
+  color: white;
+  border: none;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s;
+}
+
+.btn-pink:hover {
+  background-color: #ff3385;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+  color: white;
+}
+
+.text-pink {
+  color: #ff69b4 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #ced4da !important;
+}
+
+.navbar-yellow {
+  background-color: #ffd700;
+}
+
+.navbar-yellow .nav-link,
+.navbar-yellow .navbar-brand {
+  color: #000 !important;
+}
+
+.navbar-yellow .nav-link:hover {
+  color: #444 !important;
+}
+
+.navbar-yellow.navbar-light .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.table-description {
+  max-width: 300px;
+  white-space: normal;
+  word-break: break-word;
+}
+
