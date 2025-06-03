@@ -28,10 +28,10 @@ Trigger `validate_transaction` berfungsi sebagai sistem pengaman otomatis yang a
 
 Beberapa peran trigger di sistem ini:
 * Menolak transaksi ke akun yang invalid.
-* Menolak transaksi dengan jumlah tidak logis(≤ 0).
+* Menolak transaksi dengan jumlah tidak logis (≤ 0).
 * Mencegah duplikasi transaksi dengan `transaction_id` yang sama.
 
-Dengan adanya trigger di lapisan database, validasi tetap dijalankan secara otomatis, bahkan jika ada celah atau kelalaian dari sisi aplikasi. Ini selaras dengan prinsip reliability pada sistem terdistribusi.
+Dengan adanya trigger di lapisan database, validasi tetap dijalankan secara otomatis, bahkan jika ada celah atau kelalaian dari sisi aplikasi. Ini selaras dengan prinsip reliabilitas pada sistem terdistribusi.
 
 ### 🔄 Transaction (Transaksi)
 Dalam sistem perbankan, sebuah transaksi seperti transfer atau pembukaan rekening tidak dianggap berhasil jika hanya sebagian prosesnya yang selesai. Semua langkah harus dijalankan hingga tuntas — jika salah satu gagal, seluruh proses dibatalkan. Prinsip ini diwujudkan melalui penggunaan `beginTransaction()` dan `commit()` di PHP.
