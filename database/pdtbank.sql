@@ -61,28 +61,28 @@ BEGIN
                 MYSQL_ERRNO = 1641;
         END IF;
     END IF;
-     
+
+    IF NOT EXISTS (SELECT 1 FROM accounts WHERE account_number = NEW.to_account) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Recipient account not found',
+            MYSQL_ERRNO = 1642;
+    END IF;
+    
     IF NEW.to_account = 'Cash Deposit ATM' THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Cannot deposit to system account',
-            MYSQL_ERRNO = 1642;
+            MYSQL_ERRNO = 1643;
     END IF;
 
     IF NEW.from_account = NEW.to_account THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Cannot transfer to the same account',
-            MYSQL_ERRNO = 1643;
+            MYSQL_ERRNO = 1644;
     END IF;
 
     IF EXISTS (SELECT 1 FROM transactions WHERE transaction_id = NEW.transaction_id) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Duplicate transaction',
-            MYSQL_ERRNO = 1644;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM accounts WHERE account_number = NEW.to_account) THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'Recipient account not found',
             MYSQL_ERRNO = 1645;
     END IF;
 
@@ -106,10 +106,7 @@ CREATE PROCEDURE transfer_money(
 BEGIN
     DECLARE v_balance DECIMAL(15,2);
 
-    SELECT balance INTO v_balance
-    FROM accounts
-    WHERE account_number = p_from_account
-    FOR UPDATE;
+    SET v_balance = get_balance(p_from_account);
     
     IF v_balance < p_amount THEN
         SIGNAL SQLSTATE '45000' 
