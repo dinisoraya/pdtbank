@@ -54,15 +54,15 @@ Trigger `validate_transaction` berfungsi sebagai sistem pengaman otomatis yang a
 
 Trigger `validate_transaction` otomatis aktif pada procedure berikut:
 * `transfer_money`
-```sql
-INSERT INTO transactions (transaction_id, from_account, to_account, amount)
-VALUES (p_transaction_id, p_from_account, p_to_account, p_amount);
-```
+  ```sql
+  INSERT INTO transactions (transaction_id, from_account, to_account, amount)
+  VALUES (p_transaction_id, p_from_account, p_to_account, p_amount);
+  ```
 * `deposit_money`
-```sql
-INSERT INTO transactions (transaction_id, from_account, to_account, amount)
-VALUES (p_transaction_id, 'Cash Deposit ATM', p_to_account, p_amount);
-```
+  ```sql
+  INSERT INTO transactions (transaction_id, from_account, to_account, amount)
+  VALUES (p_transaction_id, 'Cash Deposit ATM', p_to_account, p_amount);
+  ```
 
 Beberapa peran trigger di sistem ini:
 * Menolak transaksi ke akun yang invalid.
