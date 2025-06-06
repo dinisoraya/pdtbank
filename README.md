@@ -16,8 +16,8 @@ Stored procedure bertindak seperti SOP internal yang menetapkan alur eksekusi be
 
 Beberapa procedure penting yang digunakan:
 
-App\Models\Transaction.php
-* **```deposit_money(p_transaction_id, p_to_account, p_amount)```**: Menambah saldo akun pengguna serta mencatat detail transaksi setoran.
+`App\Models\Transaction.php`
+* **`deposit_money(p_transaction_id, p_to_account, p_amount)`**: Menambah saldo akun pengguna serta mencatat detail transaksi setoran.
   ```php
   // Call the deposit_money stored procedure
   $stmt = $this->conn->prepare("CALL deposit_money(?, ?, ?)");
@@ -27,7 +27,7 @@ App\Models\Transaction.php
       $amount
   ]);
   ```
-* **```transfer_money(p_transaction_id, p_from_account, p_to_account, p_amount)```**: Memastikan saldo pengirim cukup, memperbarui saldo kedua pihak, dan mencatat detail transaksi.
+* **`transfer_money(p_transaction_id, p_from_account, p_to_account, p_amount)`**: Memastikan saldo pengirim cukup, memperbarui saldo kedua pihak, dan mencatat detail transaksi.
   ```php
   // Call the transfer_money stored procedure
   $stmt = $this->conn->prepare("CALL transfer_money(?, ?, ?, ?)");
@@ -38,7 +38,7 @@ App\Models\Transaction.php
       $amount
   ]);
   ```
-* **```get_transaction_history(account)```**: Mengambil daftar riwayat transaksi akun pengguna.
+* **`get_transaction_history(account)`**: Mengambil daftar riwayat transaksi akun pengguna.
   ```php
   // Call the get_transaction_history stored procedure
   $stmt = $this->conn->prepare("CALL get_transaction_history(?)");
@@ -53,12 +53,12 @@ Trigger `validate_transaction` berfungsi sebagai sistem pengaman otomatis yang a
 ![Trigger](assets/img/trigger.png)
 
 Trigger `validate_transaction` otomatis aktif pada procedure berikut:
-* ```transfer_money```
+* `transfer_money`
 ```sql
 INSERT INTO transactions (transaction_id, from_account, to_account, amount)
 VALUES (p_transaction_id, p_from_account, p_to_account, p_amount);
 ```
-* ```deposit_money```
+* `deposit_money`
 ```sql
 INSERT INTO transactions (transaction_id, from_account, to_account, amount)
 VALUES (p_transaction_id, 'Cash Deposit ATM', p_to_account, p_amount);
@@ -76,8 +76,8 @@ Dalam sistem perbankan, sebuah transaksi seperti transfer atau pembukaan rekenin
 
 Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menjalankan procedure penyimpanan (stored procedure), lalu meng-commit perubahan jika berhasil. Namun, jika ditemukan masalah — seperti saldo tidak mencukupi atau akun tidak ditemukan — maka seluruh proses dibatalkan menggunakan `rollback()`. Hal ini mencegah perubahan data yang parsial, seperti saldo yang terpotong padahal transaksi tidak sah.
 
-```App\Models\Transaction.php```
-* Implementasi transaction untuk procedure ```deposit_money```
+`App\Models\Transaction.php`
+* Implementasi transaction untuk procedure `deposit_money`
   ```php
   try {
       // Start a transaction
@@ -99,7 +99,7 @@ Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menj
 
       throw new Exception("Deposit failed: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[1]} {$message}");
   }
-* Implementasi transaction untuk procedure ```transfer_money```
+* Implementasi transaction untuk procedure `transfer_money`
   ```php
   try {
       // Start a transaction
@@ -126,7 +126,7 @@ Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menj
 
 Demikian pula saat user melakukan registrasi, sistem tidak hanya menyimpan data user, tetapi juga membuat akun bank sekaligus. Proses ini dijalankan dalam satu transaksi agar semua langkah saling bergantung dan terjamin konsistensinya.
 
-```App\Models\User.php```
+`App\Models\User.php`
 ```php
 try {
     // Start a transaction
@@ -159,13 +159,13 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
 
 * Aplikasi
 
-  ``App/Models/Account.php``
+  `App/Models/Account.php`
   ```php
   $stmt = $this->conn->prepare("SELECT get_balance(?) AS balance");
   $stmt->execute([$accountNumber]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   ```
-* Procedure ```transfer_money```
+* Procedure `transfer_money`
   ```sql
   SET v_balance = get_balance(p_from_account);
   ```
