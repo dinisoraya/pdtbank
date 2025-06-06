@@ -98,7 +98,7 @@ Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menj
       $message = $errorInfo[2] ?? $e->getMessage();
 
       throw new Exception("Deposit failed: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[1]} {$message}");
-        }
+  }
 * Implementasi transaction untuk procedure ```transfer_money```
   ```php
   try {
@@ -121,7 +121,7 @@ Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menj
       $message = $errorInfo[2] ?? $e->getMessage();
 
       throw new Exception("Transfer failed: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[1]} {$message}");
-    }
+  }
   ```
 
 Demikian pula saat user melakukan registrasi, sistem tidak hanya menyimpan data user, tetapi juga membuat akun bank sekaligus. Proses ini dijalankan dalam satu transaksi agar semua langkah saling bergantung dan terjamin konsistensinya.
