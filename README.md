@@ -123,7 +123,6 @@ Contohnya, pada proses transfer dan deposit, sistem akan memulai transaksi, menj
       throw new Exception("Transfer failed: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[1]} {$message}");
   }
   ```
-
 Demikian pula saat user melakukan registrasi, sistem tidak hanya menyimpan data user, tetapi juga membuat akun bank sekaligus. Proses ini dijalankan dalam satu transaksi agar semua langkah saling bergantung dan terjamin konsistensinya.
 
 `App\Models\User.php`
@@ -153,7 +152,7 @@ Function digunakan untuk mengambil informasi tanpa mengubah data. Seperti layar 
 
 Contohnya, fungsi  `get_balance(account)` mengembalikan saldo terkini dari sebuah akun. 
 
-Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau resiko ketidaksesuaian antara sistem aplikasi dan database.
+Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau risiko ketidaksesuaian antara sistem aplikasi dan database.
 
 ![Function](assets/img/function.png)
 
@@ -169,8 +168,6 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
   ```sql
   SET v_balance = get_balance(p_from_account);
   ```
-
-
 Penggunaan function seperti ini mencerminkan praktik pemisahan logika bisnis di database layer, yang relevan dalam konteks Pemrosesan Data Terdistribusi — di mana konsistensi dan reliabilitas antar node atau proses sangat krusial.
 
 ### 🔄 Backup Otomatis
