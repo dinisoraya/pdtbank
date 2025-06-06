@@ -15,6 +15,8 @@ Stored procedure bertindak seperti SOP internal yang menetapkan alur eksekusi be
 ![Procedure](assets/img/procedure.png)
 
 Beberapa procedure penting yang digunakan:
+
+App\Models\Transaction.php
 * **```deposit_money(p_transaction_id, p_to_account, p_amount)```**: Menambah saldo akun pengguna serta mencatat detail transaksi setoran.
   ```php
   // Call the deposit_money stored procedure
