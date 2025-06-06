@@ -154,6 +154,9 @@ Function digunakan untuk mengambil informasi tanpa mengubah data. Seperti layar 
 Contohnya, fungsi  `get_balance(account)` mengembalikan saldo terkini dari sebuah akun. 
 
 Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau resiko ketidaksesuaian antara sistem aplikasi dan database.
+
+![Function](assets/img/function.png)
+
 * Aplikasi
 
   ``App/Models/Account.php``
@@ -166,8 +169,7 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
   ```sql
   SET v_balance = get_balance(p_from_account);
   ```
-  
-![Function](assets/img/function.png)
+
 
 Penggunaan function seperti ini mencerminkan praktik pemisahan logika bisnis di database layer, yang relevan dalam konteks Pemrosesan Data Terdistribusi — di mana konsistensi dan reliabilitas antar node atau proses sangat krusial.
 
