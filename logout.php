@@ -2,6 +2,7 @@
 require_once __DIR__ . '/init.php';
 
 session_unset();
+session_destroy();
 
 setFlash('You have been logged out.', 'success');
 

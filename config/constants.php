@@ -8,9 +8,11 @@ if (php_sapi_name() == 'cli') {
     define('BASE_URL', '');
 } else {
     $host = $_SERVER['HTTP_HOST'];
-    if ($host === 'localhost') {
-        define('BASE_URL', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
+    $path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+    if ($path === '' || $path === '/') {
+        define('BASE_URL', "http://$host");
     } else {
-        define('BASE_URL', 'http://' . $host);
+        define('BASE_URL', "http://$host$path");
     }
 }

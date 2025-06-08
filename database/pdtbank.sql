@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE accounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    account_number CHAR(10) NOT NULL UNIQUE,
+    account_number VARCHAR(20) NOT NULL UNIQUE,
     balance DECIMAL(15,2) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -35,15 +35,16 @@ CREATE TABLE transactions (
 -- get_balance function
 -- This function retrieves the balance of a given account number.
 DELIMITER $$ 
-CREATE FUNCTION get_balance(account VARCHAR(20))
+CREATE FUNCTION get_balance(p_account VARCHAR(20))
 RETURNS DECIMAL(15,2)
 DETERMINISTIC
+READS SQL DATA
 BEGIN
-    DECLARE blc DECIMAL(15,2);
-    SELECT balance INTO blc
+    DECLARE v_balance DECIMAL(15,2);
+    SELECT balance INTO v_balance
     FROM accounts
-    WHERE account_number = account;
-    RETURN IFNULL(blc, 0);
+    WHERE account_number = p_account;
+    RETURN IFNULL(v_balance, 0);
 END$$
 DELIMITER ;
 
@@ -148,28 +149,43 @@ DELIMITER ;
 -- get_transaction_history procedure
 -- This procedure retrieves the transaction history for a given account number.
 DELIMITER //
-CREATE PROCEDURE  get_transaction_history(IN account VARCHAR(50))
+
+CREATE PROCEDURE get_transaction_history(
+    IN p_account VARCHAR(20)
+)
 BEGIN
-    SELECT 
+    DECLARE v_account VARCHAR(20) DEFAULT p_account;
+
+    SELECT
         t.created_at,
         CASE
-            WHEN t.from_account = account THEN 
-                CONCAT('Transfer to ', t.to_account, ' - ', COALESCE(u_to.username, 'Unknown'))
+            WHEN t.from_account = v_account THEN 
+                CONCAT('Transfer to ', t.to_account, ' – ', COALESCE(u_to.username, 'Unknown'))
             WHEN LOWER(t.from_account) = 'cash deposit atm' THEN 
                 'Cash Deposit ATM'
             ELSE 
-                CONCAT('Received from ', t.from_account, ' - ', COALESCE(u_from.username, 'Unknown'))
+                CONCAT('Received from ', t.from_account, ' – ', COALESCE(u_from.username, 'Unknown'))
         END AS description,
         CASE
-            WHEN t.from_account = account THEN -t.amount
+            WHEN t.from_account = v_account THEN -t.amount
             ELSE t.amount
-        END AS net_change
-    FROM transactions t
-    LEFT JOIN accounts a_from ON t.from_account = a_from.account_number
-    LEFT JOIN users u_from ON a_from.user_id = u_from.id
-    LEFT JOIN accounts a_to ON t.to_account = a_to.account_number
-    LEFT JOIN users u_to ON a_to.user_id = u_to.id
-    WHERE t.from_account = account OR t.to_account = account
+        END AS net_change,
+        SUM(
+            CASE 
+                WHEN t.from_account = v_account THEN -t.amount 
+                ELSE t.amount 
+            END
+        ) OVER (
+            ORDER BY t.created_at
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS balance_at_that_time
+    FROM transactions AS t
+    LEFT JOIN accounts AS a_from ON t.from_account = a_from.account_number
+    LEFT JOIN users    AS u_from ON a_from.user_id = u_from.id
+    LEFT JOIN accounts AS a_to   ON t.to_account   = a_to.account_number
+    LEFT JOIN users    AS u_to   ON a_to.user_id   = u_to.id
+    WHERE t.from_account = v_account
+       OR t.to_account   = v_account
     ORDER BY t.created_at ASC;
 END //
 DELIMITER ;

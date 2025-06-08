@@ -43,7 +43,6 @@ Beberapa procedure penting yang digunakan:
   // Call the get_transaction_history stored procedure
   $stmt = $this->conn->prepare("CALL get_transaction_history(?)");
   $stmt->execute([$accountNumber]);
-  $raw = $stmt->fetchAll(PDO::FETCH_ASSOC);
   ```
 Dengan menyimpan proses-proses ini di sisi database, sistem menjaga integritas data di level paling dasar, terlepas dari cara aplikasi mengaksesnya.
 
@@ -150,7 +149,7 @@ try {
 ### 📺 Function 
 Function digunakan untuk mengambil informasi tanpa mengubah data. Seperti layar monitor: hanya menampilkan data, tidak mengubah apapun.
 
-Contohnya, fungsi  `get_balance(account)` mengembalikan saldo terkini dari sebuah akun. 
+Contohnya, fungsi  `get_balance(p_account)` mengembalikan saldo terkini dari sebuah akun. 
 
 Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau risiko ketidaksesuaian antara sistem aplikasi dan database.
 
@@ -158,6 +157,11 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
 
 * Aplikasi
 
+  `home.php`
+  ```php
+  $balance = $accountModel->getBalance($userId);
+  ```
+  
   `App/Models/Account.php`
   ```php
   $stmt = $this->conn->prepare("SELECT get_balance(?) AS balance");

@@ -1,19 +1,22 @@
 <?php
-function ensureAuthenticated() {
+function ensureAuthenticated()
+{
     if (!isset($_SESSION['user_id'])) {
         header('Location: /login.php');
         exit();
     }
 }
 
-function setFlash($message, $type = 'success') {
+function setFlash($message, $type = 'success')
+{
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
     $_SESSION[$type] = $message;
 }
 
-function getFlash($type = 'success') {
+function getFlash($type = 'success')
+{
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }

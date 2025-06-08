@@ -90,15 +90,8 @@ class Transaction
         // Call the get_transaction_history stored procedure
         $stmt = $this->conn->prepare("CALL get_transaction_history(?)");
         $stmt->execute([$accountNumber]);
-        $raw = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Calculate cumulative balance (balance_at_that_time)
-        $balance = 0;
-        foreach ($raw as &$row) {
-            $balance += $row['net_change'];
-            $row['balance_at_that_time'] = $balance;
-        }
-        return $raw;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function uuid4(): string

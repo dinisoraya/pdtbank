@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . '/constants.php';
 
-class Database {
+class Database
+{
     private $conn;
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
 
         try {

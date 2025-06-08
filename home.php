@@ -10,7 +10,7 @@ $accountModel = new Account($db);
 
 $userId = $_SESSION['user_id'];
 $account = $accountModel->findByUserId($userId);
-$balance = $account['balance'] ?? 0;
+$balance = $accountModel->getBalance($userId);
 
 ob_start();
 $title = "pdtbank";

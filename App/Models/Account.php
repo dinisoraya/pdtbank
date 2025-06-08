@@ -31,12 +31,6 @@ class Account
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function updateBalance(string $accountNumber, float $amount): bool
-    {
-        $stmt = $this->conn->prepare("UPDATE accounts SET balance = ? WHERE account_number = ?");
-        return $stmt->execute([$amount, $accountNumber]);
-    }
-
     public function getBalance(int $userId): float
     {
         // Read the balance using a get_balance function
