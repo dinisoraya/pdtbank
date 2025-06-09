@@ -7,10 +7,6 @@ $db = (new Database())->getConnection();
 $transactionModel = new \App\Models\Transaction($db);
 $transactions = $transactionModel->getTransactionHistory($_SESSION['user_id']);
 
-if ($transactions === false) {
-    setFlash('Unable to fetch transaction history.', 'error');
-}
-
 ob_start();
 $title = "Transaction History";
 $description = "View your recent transaction history";
