@@ -161,7 +161,15 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
   ```php
   $balance = $accountModel->getBalance($userId);
   ```
-  
+  ```html
+  <div class="d-flex align-items-center me-2">
+      <span class="me-1 text-secondary">Balance:</span>
+      <span class="fw-semibold fs-5 ms-1">Rp</span>
+      <span id="balance" class="fs-4 fw-semibold ms-1"
+          data-real-balance="<?= number_format($balance, 2, ',', '.') ?>">••••••••</span>
+  </div>
+  ```
+
   `App/Models/Account.php`
   ```php
   $stmt = $this->conn->prepare("SELECT get_balance(?) AS balance");
