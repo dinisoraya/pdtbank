@@ -179,6 +179,12 @@ Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di databa
 * Procedure `transfer_money`
   ```sql
   SET v_balance = get_balance(p_from_account);
+
+  IF v_balance < p_amount THEN
+      SIGNAL SQLSTATE '45000' 
+      SET MESSAGE_TEXT = 'Insufficient balance',
+          MYSQL_ERRNO = 1647;
+  END IF;
   ```
 Penggunaan function seperti ini mencerminkan praktik pemisahan logika bisnis di database layer, yang relevan dalam konteks Pemrosesan Data Terdistribusi — di mana konsistensi dan reliabilitas antar node atau proses sangat krusial.
 

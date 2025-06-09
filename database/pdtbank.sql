@@ -66,13 +66,13 @@ BEGIN
     IF NEW.to_account = 'Cash Deposit ATM' THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Cannot deposit to system account',
-            MYSQL_ERRNO = 1643;
+            MYSQL_ERRNO = 1642;
     END IF;
 
     IF NOT EXISTS (SELECT 1 FROM accounts WHERE account_number = NEW.to_account) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Recipient account not found',
-            MYSQL_ERRNO = 1642;
+            MYSQL_ERRNO = 1643;
     END IF;
 
     IF NEW.from_account = NEW.to_account THEN
