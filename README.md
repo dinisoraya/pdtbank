@@ -38,7 +38,7 @@ Beberapa procedure penting yang digunakan:
       $amount
   ]);
   ```
-* **`get_transaction_history(account)`**: Mengambil daftar riwayat transaksi akun pengguna.
+* **`get_transaction_history(p_account)`**: Mengambil daftar riwayat transaksi akun pengguna.
   ```php
   // Call the get_transaction_history stored procedure
   $stmt = $this->conn->prepare("CALL get_transaction_history(?)");
