@@ -1,5 +1,5 @@
 # 🐖 pdtbank (Contoh Proyek UAP) 
-Proyek ini merupakan sistem perbankan sederhana yang dibangun menggunakan PHP dan MySQL. Tujuannya adalah untuk mengelola transaksi keuangan secara aman dan konsisten, dengan memanfaatkan stored procedure, trigger, transaction, dan function. Sistem ini juga dilengkapi mekanisme backup otomatis untuk menjaga keamanan data jika terjadi hal yang tidak diinginkan.
+Proyek ini merupakan sistem perbankan sederhana yang dibangun menggunakan PHP dan MySQL. Tujuannya adalah untuk mengelola transaksi keuangan secara aman dan konsisten, dengan memanfaatkan stored procedure, trigger, transaction, dan stored function. Sistem ini juga dilengkapi mekanisme backup otomatis untuk menjaga keamanan data jika terjadi hal yang tidak diinginkan.
 
 ![Home](assets/img/home.png)
 
@@ -7,7 +7,7 @@ Proyek ini merupakan sistem perbankan sederhana yang dibangun menggunakan PHP da
 
 ### ⚠️ Disclaimer
 
-Peran  **stored procedure**, **trigger**, **transaction**, dan **function** dalam proyek ini dirancang khusus untuk kebutuhan sistem **pdtbank**. Penerapannya bisa berbeda pada sistem lain, tergantung arsitektur dan kebutuhan masing-masing sistem.
+Peran  **stored procedure**, **trigger**, **transaction**, dan **stored function** dalam proyek ini dirancang khusus untuk kebutuhan sistem **pdtbank**. Penerapannya bisa berbeda pada sistem lain, tergantung arsitektur dan kebutuhan masing-masing sistem.
 
 ### 🧠 Stored Procedure 
 Stored procedure bertindak seperti SOP internal yang menetapkan alur eksekusi berbagai operasi penting di sistem perbankan. Procedure ini disimpan langsung di lapisan database, sehingga dapat menjamin konsistensi, efisiensi, dan keamanan eksekusi, terutama dalam sistem terdistribusi atau multi-user.
@@ -146,12 +146,12 @@ try {
     throw new Exception("Registration failed due to database error.");
 }
 ```
-### 📺 Function 
-Function digunakan untuk mengambil informasi tanpa mengubah data. Seperti layar monitor: hanya menampilkan data, tidak mengubah apapun.
+### 📺 Stored Function 
+Stored function digunakan untuk mengambil informasi tanpa mengubah data. Seperti layar monitor: hanya menampilkan data, tidak mengubah apapun.
 
-Contohnya, fungsi  `get_balance(p_account)` mengembalikan saldo terkini dari sebuah akun. 
+Contohnya, function  `get_balance(p_account)` mengembalikan saldo terkini dari sebuah akun. 
 
-Fungsi ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau risiko ketidaksesuaian antara sistem aplikasi dan database.
+Function ini dipanggil baik dari aplikasi maupun dari procedure yang ada di database. Dengan begitu, logika pembacaan saldo tetap terpusat dan konsisten, tanpa perlu duplikasi kode atau risiko ketidaksesuaian antara sistem aplikasi dan database.
 
 ![Function](assets/img/function.png)
 
