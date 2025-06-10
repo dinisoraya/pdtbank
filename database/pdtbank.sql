@@ -45,7 +45,7 @@ BEGIN
     FROM accounts
     WHERE account_number = p_account;
     RETURN IFNULL(v_balance, 0);
-END$$
+END $$
 DELIMITER ;
 
 -- validate_transaction trigger
@@ -92,7 +92,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Amount must be greater than zero',
             MYSQL_ERRNO = 1646;
     END IF;
-END$$
+END $$
 DELIMITER ;
 
 -- transfer_money procedure
@@ -125,7 +125,7 @@ BEGIN
     UPDATE accounts
     SET balance = balance + p_amount
     WHERE account_number = p_to_account;
-END$$
+END $$
 DELIMITER ;
 
 -- deposit_money procedure
@@ -143,13 +143,12 @@ BEGIN
     UPDATE accounts
     SET balance = balance + p_amount
     WHERE account_number = p_to_account;
-END$$
+END $$
 DELIMITER ;
 
 -- get_transaction_history procedure
 -- This procedure retrieves the transaction history for a given account number.
-DELIMITER //
-
+DELIMITER $$
 CREATE PROCEDURE get_transaction_history(
     IN p_account VARCHAR(20)
 )
@@ -187,5 +186,5 @@ BEGIN
     WHERE t.from_account = v_account
        OR t.to_account   = v_account
     ORDER BY t.created_at ASC;
-END //
+END $$
 DELIMITER ;
